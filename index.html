@@ -1,0 +1,261 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>the julian index</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="assets/css/bootstrap.css" rel="stylesheet">
+    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="assets/css/docs.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
+      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+                    <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+                                   <link rel="shortcut icon" href="assets/ico/favicon.png">
+<script type="text/javascript" charset="utf-8">
+(function() {
+  var filter, line, results, text, wordList, _i, _len;
+text1 = [
+"one",
+"two",
+"two ",
+"three",
+"three"];
+
+wordList = [];
+results = [];
+addMenu = function (item) {
+	var element;
+    element = document.createElement("li");
+    //$(".nav-list").append("<li>x</li")
+    element.innerHTML = item;
+    $(".nav-list").append(element);
+    $('[data-spy="affix"]').each(function () {
+  $(this).affix('refresh')
+});
+}
+showContext = function (linenumber, sourcenumber, before, after) {
+  var text;
+  text = "";
+  switch (sourcenumber) {
+    case 1 : for (_i = linenumber-before, _len = linenumber+after; _i < _len; _i++) text = text + "<br>" + text1[_i];
+              break;
+  }
+  $(".modal-body").html(text);
+  $('#myModal').modal('show');
+}
+underConstruction = function (item) {
+  alert('this item is still under construction. sorry!')
+}
+showLine = function (linenumber, sourcenumber) {
+	alert("line number: " + linenumber + "@" + sourcenumber);
+}
+doSearch = function () {
+	filter = function(line, linenumber, sourcetitle, sourcenumber) {
+	    var found, log;
+	    found = wordList.some(function(word) {
+	      return ~line.indexOf(word);
+	    });
+	    log = wordList.filter(function(word) {
+	      return ~line.indexOf(word);
+	    });
+	    if (found) {
+	    	// + log.length +
+	      return results.push("<li>" + line + "<i> [" + sourcetitle + " ]</i> <div class='btn-group'><button type='button' class='btn btn-mini btn-info' onclick='showContext(" + linenumber + "," + sourcenumber + ",3,3);'>See Source</button><button type='button' class='btn btn-mini btn-info' onclick='underConstruction();'><i class='icon-heart icon-white'></i></button></div></li>");
+	      //<input type='button' value='See Source' onclick='showLine(" + linenumber + "," + sourcenumber + ");'>
+	    }
+  	};
+  	for (_i = 0, _len = text1.length; _i < _len; _i++) {
+	    line = text1[_i];
+	    filter(line, _i, "text1",1);
+  	}
+}
+doHighlight = function (bodyText, searchTerm, highlightStartTag, highlightEndTag) {
+  if ((!highlightStartTag) || (!highlightEndTag)) {
+    highlightStartTag = "<font style='color:blue; background-color:yellow;'>";
+    highlightEndTag = "</font>";
+  }
+  var newText = "";
+  var i = -1;
+  var lcSearchTerm = searchTerm.toLowerCase();
+  var lcBodyText = bodyText.toLowerCase();
+    
+  while (bodyText.length > 0) {
+    i = lcBodyText.indexOf(lcSearchTerm, i+1);
+    if (i < 0) {
+      newText += bodyText;
+      bodyText = "";
+    } else {
+      if (bodyText.lastIndexOf(">", i) >= bodyText.lastIndexOf("<", i)) {
+        if (lcBodyText.lastIndexOf("/script>", i) >= lcBodyText.lastIndexOf("<script", i)) {
+          newText += bodyText.substring(0, i) + highlightStartTag + bodyText.substr(i, searchTerm.length) + highlightEndTag;
+          bodyText = bodyText.substr(i + searchTerm.length);
+          lcBodyText = bodyText.toLowerCase();
+          i = -1;
+        }
+      }
+    }
+  }
+  
+  return newText;
+}
+highlightSearchTerms = function (searchText, treatAsPhrase, warnOnFailure, highlightStartTag, highlightEndTag) {
+  if (treatAsPhrase) {
+    searchArray = [searchText];
+  } else {
+    searchArray = searchText.split(" ");
+  }
+  
+  if (!document.body || typeof(document.body.innerHTML) == "undefined") {
+    if (warnOnFailure) {
+      alert("Sorry, for some reason the text of this page is unavailable. Searching will not work.");
+    }
+    return false;
+  }
+  var bodyText = document.body.innerHTML;
+  for (var i = 0; i < searchArray.length; i++) {
+    bodyText = doHighlight(bodyText, searchArray[i], highlightStartTag, highlightEndTag);
+  }
+  document.body.innerHTML = bodyText;
+  return true;
+}
+replaySearch = function (searchtext) {
+  wordList = [];
+  results = [];
+  wordList.push(searchtext);
+  //document.getElementById('filter').value = "";
+  doSearch();
+  var element;
+      element = document.createElement("div");
+      element.innerHTML = "<h3>search results for: " + wordList[0] + "</h3><ul>" + results + "</ul>";
+      //document.body.appendChild(element);
+      $("#global").html(element);
+      highlightSearchTerms(wordList[0]);
+      wordList = [];
+    results = [];
+}
+showSearch = function (searchtext) {
+  if ($.trim(document.getElementById('filter').value) != "") {
+  	wordList.push(document.getElementById('filter').value);
+    var wordinquotes = '"' + wordList[0] + '"';
+    addMenu("<a onclick='replaySearch(" + wordinquotes +")'>" + wordList[0] + "</a>");
+  	doSearch();
+  	var element;
+      element = document.createElement("div");
+      element.innerHTML = "<h3>search results for: " + wordList[0] + "</h3><ul>" + results + "</ul>";
+      //document.body.appendChild(element);
+      $("#global").html(element);
+      highlightSearchTerms(wordList[0]);
+      wordList = [];
+  	results = [];
+   }
+}
+document.addEventListener('DOMContentLoaded', function() {$('#filter').keypress(function() {if (event.keyCode == '13') showSearch()});});
+}).call(this);
+</script>
+</head>
+  <body data-spy="scroll" data-target=".bs-docs-sidebar">
+ <!-- Navbar
+    ================================================== -->
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="">
+                <a href="index.html"><i class='icon-home icon-white'></i> Home</a>
+              </li>
+              <li class="">
+                <a href="#favoritesModal" data-toggle="modal"><i class='icon-heart icon-white'></i> Favorites</a>
+              </li>
+              <li class="">
+                <a href="#historyModal" data-toggle="modal"><i class='icon-time icon-white'></i> History</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+<!-- Subhead
+================================================== -->
+<header class="jumbotron subhead" id="overview">
+  <div class="container">
+    <h1>the julian index</h1>
+  </div>
+</header>
+  <div class="container">
+    <!-- Docs nav
+    ================================================== -->
+    <div class="row">
+      <div class="span3 bs-docs-sidebar">
+            <input id="filter" type="text" placeholder="Enter your query here..." autofocus="" style="width: 100%;">
+            <button class="btn btn-primary" onclick="showSearch();">Search</button>
+        <ul class="nav nav-list bs-docs-sidenav">          
+        </ul>
+      </div>
+      <div class="span9">
+        <section id="global"></section>
+      </div>
+    </div>
+  </div>
+    <!-- Footer
+    ================================================== -->
+    <footer class="footer">
+      <div class="container">
+        <p>designed 2013</p>
+      </div>
+    </footer>
+    <!-- Modals
+    ================================================== -->
+    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h3 id="myModalLabel">Contexts: Source text</h3>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+  <div id="favoritesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="favorites-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">Favorites</h3>
+    </div>
+    <div class="favorites-body">
+      <p>Under construction…</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+  <div id="historyModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="history-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">History</h3>
+    </div>
+    <div class="history-body">
+      <p>Under construction…</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+    <script src="assets/js/jquery.js"></script>
+    <script src="assets/js/bootstrap-collapse.js"></script>
+    <script src="assets/js/bootstrap-transition.js"></script>
+    <script src="assets/js/bootstrap-modal.js"></script>
+    <script src="assets/js/bootstrap-scrollspy.js"></script>
+    <script src="assets/js/bootstrap-button.js"></script>
+    <script src="assets/js/bootstrap-affix.js"></script>
+  </body>
+</html>
