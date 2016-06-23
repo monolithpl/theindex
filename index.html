@@ -1,21 +1,112 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8">
-    <title>the julian index</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="assets/css/bootstrap.css" rel="stylesheet">
-    <link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
-    <link href="assets/css/docs.css" rel="stylesheet">
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
-    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
-    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
-      <link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
-                    <link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
-                                   <link rel="shortcut icon" href="assets/ico/favicon.png">
-<script type="text/javascript" charset="utf-8">
+<head>
+	<meta charset="utf-8">
+	<title>the index</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="assets/css/bootstrap.css" rel="stylesheet">
+	<link href="assets/css/bootstrap-responsive.css" rel="stylesheet">
+	<link href="assets/css/docs.css" rel="stylesheet">
+	<!--[if lt IE 9]>
+	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="assets/ico/apple-touch-icon-144-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="assets/ico/apple-touch-icon-114-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="assets/ico/apple-touch-icon-72-precomposed.png">
+	<link rel="apple-touch-icon-precomposed" href="assets/ico/apple-touch-icon-57-precomposed.png">
+	<link rel="shortcut icon" href="assets/ico/favicon.png">
+</head>
+  <body data-spy="scroll" data-target=".bs-docs-sidebar">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <div class="nav-collapse collapse">
+            <ul class="nav">
+              <li class="">
+                <a href="index.html"><i class='icon-home icon-white'></i> Home</a>
+              </li>
+              <li class="">
+                <a href="#favoritesModal" data-toggle="modal"><i class='icon-heart icon-white'></i> Favorites</a>
+              </li>
+              <li class="">
+                <a href="#historyModal" data-toggle="modal"><i class='icon-time icon-white'></i> History</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+<header class="jumbotron subhead" id="overview">
+  <div class="container">
+    <h1>the index</h1>
+  </div>
+</header>
+  <div class="container">
+    <div class="row">
+      <div class="span3 bs-docs-sidebar">
+            <input id="filter" type="text" placeholder="Enter your query here..." autofocus="" style="width: 100%;">
+            <button class="btn btn-primary" onclick="showSearch();">Search</button>
+        <ul class="nav nav-list bs-docs-sidenav">          
+        </ul>
+      </div>
+      <div class="span9">
+        <section id="global"></section>
+      </div>
+    </div>
+  </div>
+    <footer class="footer">
+      <div class="container">
+        <p>designed 2013</p>
+      </div>
+    </footer>
+    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+              <h3 id="myModalLabel">Contexts: Source text</h3>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+  <div id="favoritesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="favorites-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">Favorites</h3>
+    </div>
+    <div class="favorites-body">
+      <p>Under construction…</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+  <div id="historyModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="history-header">
+      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+      <h3 id="myModalLabel">History</h3>
+    </div>
+    <div class="history-body">
+      <p>Under construction…</p>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" data-dismiss="modal">Close</button>
+    </div>
+  </div>
+    <script src="assets/js/jquery.js"></script>
+    <script src="assets/js/bootstrap-collapse.js"></script>
+    <script src="assets/js/bootstrap-transition.js"></script>
+    <script src="assets/js/bootstrap-modal.js"></script>
+    <script src="assets/js/bootstrap-scrollspy.js"></script>
+    <script src="assets/js/bootstrap-button.js"></script>
+    <script src="assets/js/bootstrap-affix.js"></script>
+	<script type="text/javascript" charset="utf-8">
 (function() {
   var filter, line, results, text, wordList, _i, _len;
 text1 = [
@@ -153,109 +244,10 @@ showSearch = function (searchtext) {
   	results = [];
    }
 }
-document.addEventListener('DOMContentLoaded', function() {$('#filter').keypress(function() {if (event.keyCode == '13') showSearch()});});
+document.getElementById('filter').addEventListener("keypress", function(event) {
+    if (event.keyCode == 13 && document.getElementById('filter').value.trim() !== '') showSearch()
+})
 }).call(this);
 </script>
-</head>
-  <body data-spy="scroll" data-target=".bs-docs-sidebar">
- <!-- Navbar
-    ================================================== -->
-    <div class="navbar navbar-inverse navbar-fixed-top">
-      <div class="navbar-inner">
-        <div class="container">
-          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <div class="nav-collapse collapse">
-            <ul class="nav">
-              <li class="">
-                <a href="index.html"><i class='icon-home icon-white'></i> Home</a>
-              </li>
-              <li class="">
-                <a href="#favoritesModal" data-toggle="modal"><i class='icon-heart icon-white'></i> Favorites</a>
-              </li>
-              <li class="">
-                <a href="#historyModal" data-toggle="modal"><i class='icon-time icon-white'></i> History</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-<!-- Subhead
-================================================== -->
-<header class="jumbotron subhead" id="overview">
-  <div class="container">
-    <h1>the julian index</h1>
-  </div>
-</header>
-  <div class="container">
-    <!-- Docs nav
-    ================================================== -->
-    <div class="row">
-      <div class="span3 bs-docs-sidebar">
-            <input id="filter" type="text" placeholder="Enter your query here..." autofocus="" style="width: 100%;">
-            <button class="btn btn-primary" onclick="showSearch();">Search</button>
-        <ul class="nav nav-list bs-docs-sidenav">          
-        </ul>
-      </div>
-      <div class="span9">
-        <section id="global"></section>
-      </div>
-    </div>
-  </div>
-    <!-- Footer
-    ================================================== -->
-    <footer class="footer">
-      <div class="container">
-        <p>designed 2013</p>
-      </div>
-    </footer>
-    <!-- Modals
-    ================================================== -->
-    <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h3 id="myModalLabel">Contexts: Source text</h3>
-            </div>
-            <div class="modal-body">
-            </div>
-            <div class="modal-footer">
-              <button class="btn btn-primary" data-dismiss="modal">Close</button>
-            </div>
-          </div>
-  <div id="favoritesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="favorites-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      <h3 id="myModalLabel">Favorites</h3>
-    </div>
-    <div class="favorites-body">
-      <p>Under construction…</p>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-primary" data-dismiss="modal">Close</button>
-    </div>
-  </div>
-  <div id="historyModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="history-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      <h3 id="myModalLabel">History</h3>
-    </div>
-    <div class="history-body">
-      <p>Under construction…</p>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-primary" data-dismiss="modal">Close</button>
-    </div>
-  </div>
-    <script src="assets/js/jquery.js"></script>
-    <script src="assets/js/bootstrap-collapse.js"></script>
-    <script src="assets/js/bootstrap-transition.js"></script>
-    <script src="assets/js/bootstrap-modal.js"></script>
-    <script src="assets/js/bootstrap-scrollspy.js"></script>
-    <script src="assets/js/bootstrap-button.js"></script>
-    <script src="assets/js/bootstrap-affix.js"></script>
   </body>
 </html>
